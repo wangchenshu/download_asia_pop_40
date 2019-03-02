@@ -26,6 +26,9 @@ ydl_opts = {
 
 def get_now_str():
     return time.strftime("%Y%m%d_%H%M%S")
+
+def get_today_str():
+    return time.strftime("%Y%m%d")
     
 res = requests.get(base_url, stream=True)
 soup = BeautifulSoup(res.text, 'html.parser')
@@ -35,7 +38,7 @@ if data_video_ids is None:
     sys.exit(1)
 
 ## create download dir ##
-download_dir_path = get_now_str()
+download_dir_path = 'asia_pop_40_' + get_today_str()
 try:
     os.mkdir(download_dir_path, 0o755)
 except OSError as ex:
