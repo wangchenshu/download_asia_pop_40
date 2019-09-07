@@ -8,7 +8,7 @@ import shutil
 import time
 import re
 import json
-#import youtube_dl
+import youtube_dl
 from bs4 import BeautifulSoup
 
 base_url = 'http://asiapop40.com/'
@@ -53,26 +53,29 @@ for id in data_video_ids:
     download_url = download_base_url+id['data-video-id']
     print('download now: ' + download_url)
 
+    '''
     try:
         res = requests.get(convert_base_url+download_url, headers=headers, stream=True)
         json_obj = json.loads(res.text)
+        print(json_obj)
         title = json_obj['title']
         file = json_obj['file']
         print(title, file)
         res = requests.get(file, allow_redirects=True)
         open(title + '.mp3', 'wb').write(res.content)
     except Exception as ex:
+        print(ex)
         print('download error: ' + download_url)
         f.write('error url: ' + download_url + '\n')
-
-    ''' using youtube-dl
+    '''
+    ## using youtube-dl ##
     try:
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([download_base_url+id['data-video-id']])
     except Exception as ex:
+        print(ex)
         print('download error: ' + download_url)
         f.write('error url: ' + download_url + '\n')
-    '''
 
 f.close()
 os.chdir('../')
